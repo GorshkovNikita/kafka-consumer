@@ -3,6 +3,7 @@ package diploma;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,8 @@ public class Main {
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(new ArrayList<String>() {{ add("my-replicated-topic"); }});
+        //consumer.subscribe(new ArrayList<String>() {{ add("my-replicated-topic"); }});
+        consumer.assign(new ArrayList<TopicPartition>() {{ add(new TopicPartition("my-replicated-topic", 0)); }});
         while (true) {
             System.out.println("-----------------------------------------------------------------");
             ConsumerRecords<String, String> records = consumer.poll(100);
