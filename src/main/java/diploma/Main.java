@@ -20,6 +20,7 @@ public class Main {
         props.put("session.timeout.ms", "30000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("auto.offset.reset", "earliest");
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         //consumer.subscribe(new ArrayList<String>() {{ add("my-replicated-topic"); }});
@@ -27,7 +28,7 @@ public class Main {
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(1000);
             //if (records != null) {
-                System.out.println(records.count());
+            System.out.println(records.count());
 //                for (ConsumerRecord<String, String> record : records) {
 //                    System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
 //                }
