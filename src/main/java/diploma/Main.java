@@ -4,6 +4,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -18,17 +19,18 @@ public class Main {
         props.put("session.timeout.ms", "30000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("partition.assignment.strategy", "range");
+
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe("my-replicated-topic");
+        consumer.subscribe(new ArrayList<String>() {{ add("my-replicated-topic"); }});
         while (true) {
-            ConsumerRecords<String, String> records = (ConsumerRecords<String, String>) consumer.poll(100);
-            if (records != null) {
+            System.out.println("-----------------------------------------------------------------");
+            ConsumerRecords<String, String> records = consumer.poll(100);
+            //if (records != null) {
                 System.out.println("-----------------------------------------------------------------");
-                for (ConsumerRecord<String, String> record : records.records(1)) {
+                for (ConsumerRecord<String, String> record : records) {
                     System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
                 }
-            }
+            //}
         }
     }
 }
