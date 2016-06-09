@@ -25,13 +25,12 @@ public class Main {
         //consumer.subscribe(new ArrayList<String>() {{ add("my-replicated-topic"); }});
         consumer.assign(new ArrayList<TopicPartition>() {{ add(new TopicPartition("my-replicated-topic", 0)); }});
         while (true) {
-            System.out.println("-----------------------------------------------------------------");
-            ConsumerRecords<String, String> records = consumer.poll(100);
+            ConsumerRecords<String, String> records = consumer.poll(1000);
             //if (records != null) {
-                System.out.println("-----------------------------------------------------------------");
-                for (ConsumerRecord<String, String> record : records) {
-                    System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
-                }
+                System.out.println(records.count());
+//                for (ConsumerRecord<String, String> record : records) {
+//                    System.out.printf("offset = %d, key = %s, value = %s", record.offset(), record.key(), record.value());
+//                }
             //}
         }
     }
